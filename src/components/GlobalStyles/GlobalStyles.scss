@@ -1,0 +1,55 @@
+@import 'normalize.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#root {
+    margin-bottom: 50px;
+}
+
+.box-item-timetable {
+    width: 12.5%;
+    position: relative;
+}
+
+.border-box-item {
+    border-color: #c5c0c0;
+}
+
+.disible-box {
+    background: rgb(192, 189, 189);
+    cursor: no-drop;
+}
+
+.chose-modal {
+    top: 10px;
+    left: 10px;
+}
+
+.h-modal {
+    height: 800px;
+}
+
+// Scrollbar CSS
+html *::-webkit-scrollbar {
+    border-radius: 0;
+    width: 6px;
+}
+
+html *::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: #c5c1c1;
+}
+
+html *::-webkit-scrollbar-track {
+    border-radius: 0;
+    background-color: #fff;
+}
+
+.modal-disable-box {
+    background-color: #fff;
+    padding: 8px;
+    border-radius: 10px;
+    text-align: center;
+}
