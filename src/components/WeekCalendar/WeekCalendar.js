@@ -3,11 +3,9 @@ import moment from 'moment';
 import Modal from '../Modal/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import Day from '../Day/Day';
 
 function WeekCalendar() {
     const [currentDate, setCurrentDate] = useState(moment());
-    const [day, setDay] = useState("");
 
     const handleTodayClick = () => {
         setCurrentDate(moment());
@@ -29,12 +27,6 @@ function WeekCalendar() {
         startDate = startDate.clone().add(1, 'day');
     }
 
-    const handleGetDay = (day) => {
-        console.log(day)
-
-        setDay(day)
-    }
-    // console.log(day)
     return (
         <div>
             {/* <table>
@@ -79,7 +71,14 @@ function WeekCalendar() {
                             </th>
                             {weekDays.map((day, index) => (
                                 <th key={day.format('YYYY-MM-DD')} align="center" className="`day${}`">
-                                    <Day day={day} moment={moment} handleGetDay={handleGetDay} />
+                                    <p>{day.format('ddd')}</p>
+                                    {day.format('YYYY-MM-DD') === moment().clone().startOf('day').format('YYYY-MM-DD') ? (
+                                        <p className="text-2xl mt-1">
+                                            <span className="bg-blue-500 rounded-full text-white px-2">{day.format('D')}</span>
+                                        </p>
+                                    ) : (
+                                        <p className="text-2xl mt-1">{day.format('D')}</p>
+                                    )}
                                 </th>
                             ))}
                         </tr>
@@ -92,12 +91,12 @@ function WeekCalendar() {
                             >
                                 Sáng
                             </th>
-                            {weekDays.map((index) => (
+                            {weekDays.map((day, index) => (
                                 <td
                                     key={'S' + index}
                                     className="p-4 border-solid box-item-timetable border-2 border-box-item"
                                 >
-                                    <Modal />
+                                    <Modal day={day.format('DD-MM-YYYY')} />
                                 </td>
                             ))}
                         </tr>
@@ -110,12 +109,12 @@ function WeekCalendar() {
                                 Chiều
                             </th>
 
-                            {weekDays.map((index) => (
+                            {weekDays.map((day, index) => (
                                 <td
                                     key={'C' + index}
                                     className="p-4 border-solid box-item-timetable border-2 border-box-item"
                                 >
-                                    <Modal />
+                                    <Modal day={day.format('DD-MM-YYYY')} />
                                 </td>
                             ))}
                         </tr>
@@ -128,12 +127,12 @@ function WeekCalendar() {
                                 Tối
                             </th>
 
-                            {weekDays.map((index) => (
+                            {weekDays.map((day, index) => (
                                 <td
                                     key={'T' + index}
                                     className="p-4 border-solid box-item-timetable border-2 border-box-item"
                                 >
-                                    <Modal />
+                                    <Modal day={day.format('DD-MM-YYYY')} />
                                 </td>
                             ))}
                         </tr>
