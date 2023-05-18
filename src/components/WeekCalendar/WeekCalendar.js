@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import Modal from '../Modal/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { convertTimeStampToLocalDate } from '../../constants/handler';
-import { timeBooking } from '../../socket.service';
+import { convertTimeStampToLocalDate, getLabIdFromPath } from '../../constants/handler';
+import { timeBooking, onTimeBooking } from '../../socket.service';
 
 function WeekCalendar() {
     const [currentDate, setCurrentDate] = useState(moment());
-
-    // const [labInput, setLabInput] = useState('');
 
     const handleTodayClick = () => {
         setCurrentDate(moment());
@@ -23,12 +21,18 @@ function WeekCalendar() {
         setCurrentDate(currentDate.clone().add(1, 'week'));
     };
 
-    const handleChooseClick = (day, period) => {
-        const currentLabId = localStorage.getItem('currentLabId');
-        const time = convertTimeStampToLocalDate(day);
-        
-        timeBooking({ labId: currentLabId, timeBooking: time, period: period });
-    };
+    // const handleTimeBooking = (day, period) => {
+    //     const currentLabId = localStorage.getItem('currentLabId');
+    //     const time = convertTimeStampToLocalDate(day);
+    //     timeBooking({ labId: currentLabId, timeBooking: time, period: period }, (data) => {
+
+    //     });
+    // };
+
+    // useEffect(() => {
+    //     console.log('type: ' + typeof listTimeBooking);
+    //     console.log('listTimeBooking: ' + listTimeBooking);
+    // }, [listTimeBooking]);
 
     const weekDays = [];
     let startDate = currentDate.clone().startOf('week');
@@ -115,7 +119,10 @@ function WeekCalendar() {
                                     key={'S' + index}
                                     className="p-4 border-solid box-item-timetable border-2 border-box-item"
                                 >
-                                    <Modal onClick={() => handleChooseClick(day, 'MORNING')} />
+                                    <Modal
+                                        day={day}
+                                        period="MORNING"
+                                    />
                                 </td>
                             ))}
                         </tr>
@@ -133,7 +140,10 @@ function WeekCalendar() {
                                     key={'C' + index}
                                     className="p-4 border-solid box-item-timetable border-2 border-box-item"
                                 >
-                                    <Modal onClick={() => handleChooseClick(day, 'AFTERNOON')} />
+                                    <Modal
+                                        day={day}
+                                        period="AFTERNOON"
+                                    />
                                 </td>
                             ))}
                         </tr>
@@ -151,7 +161,10 @@ function WeekCalendar() {
                                     key={'T' + index}
                                     className="p-4 border-solid box-item-timetable border-2 border-box-item"
                                 >
-                                    <Modal onClick={() => handleChooseClick(day, 'EVENING')} />
+                                    <Modal
+                                        day={day}
+                                        period="EVENING"
+                                    />
                                 </td>
                             ))}
                         </tr>

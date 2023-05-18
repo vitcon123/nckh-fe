@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { convertTimeStampToLocalDate } from '../../constants/handler';
+import { cancelTimeBooking, timeBooking } from '../../socket.service';
 
 const data = [
     {
@@ -65,15 +67,32 @@ const data = [
 ];
 
 export default function Modal(props) {
-    const [showModal, setShowModal] = React.useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [lockTimeBooking, setLockTimeBookinghowModal] = useState([]);
+    const currentLabId = localStorage.getItem('currentLabId');
+    const timeBookingDetail = convertTimeStampToLocalDate(props.day);
+
+    const handleTimeBooking = async () => {
+        lockTimeBooking = await timeBooking({
+            labId: currentLabId,
+            timeBooking: timeBookingDetail,
+            period: props.period,
+        });
+    };
+
+    const handleCancelTimeBooking = () => {
+        cancelTimeBooking({ labId: currentLabId, timeBooking: timeBookingDetail, period: props.period });
+        setShowModal(false);
+    };
 
     return (
         <div className="wrapper">
+            <h1>lock: {lockTimeBooking}</h1>
             <button
                 className="absolute chose-modal"
                 type="button"
                 onClick={() => {
-                    props.onClick();
+                    handleTimeBooking();
                     setShowModal(true);
                 }}
             >
@@ -83,7 +102,7 @@ export default function Modal(props) {
                 <>
                     <div
                         className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-                        onClick={() => setShowModal(false)}
+                        onClick={() => handleCancelTimeBooking()}
                     >
                         <div className="relative w-full my-6 mx-auto max-w-6xl" onClick={(e) => e.stopPropagation()}>
                             {/*content*/}
@@ -135,7 +154,7 @@ export default function Modal(props) {
                                             <td className="px-4 py-2 text-right" colSpan={4}>
                                                 <button
                                                     className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-                                                    onClick={() => setShowModal(false)}
+                                                    onClick={() => handleCancelTimeBooking()}
                                                 >
                                                     Đóng
                                                 </button>

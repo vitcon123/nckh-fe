@@ -1,5 +1,4 @@
 const convertTimeStampToLocalDate = (unixTime) => {
-    console.log('unix: ' + unixTime);
     const date = new Date(unixTime);
 
     date.setHours(date.getHours() + 7);
