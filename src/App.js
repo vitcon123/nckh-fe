@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DefaultLayout from './layouts/DefaultLayout';
 
@@ -20,16 +20,11 @@ function App() {
     const previosLabId = localStorage.getItem('currentLabId');
     const currentLabId = getLabIdFromPath(window.location.href);
     useEffect(() => {
-        console.log('previosLabId: ' + previosLabId);
-        console.log('currentLabId: ' + currentLabId);
         localStorage.setItem('currentLabId', currentLabId);
         if (previosLabId && currentLabId) {
             clientLeaveLab(previosLabId);
             clientSendLab(currentLabId);
         }
-        return () => {
-            disconnectSocket();
-        };
     }, [previosLabId, currentLabId]);
 
     return (
