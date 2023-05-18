@@ -1,71 +1,65 @@
-import { useState } from "react";
-
-
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 const listLink = [
     {
-        path: 'p1',
+        id: 1,
+        path: '1',
         label: 'Phòng 1',
-        isActive: true
     },
     {
-        path: 'p2',
+        id: 2,
+        path: '2',
         label: 'Phòng 2',
     },
     {
-        path: 'p3',
+        id: 3,
+        path: '3',
         label: 'Phòng 3',
     },
     {
-        path: 'p4',
+        id: 4,
+        path: '4',
         label: 'Phòng 4',
     },
     {
-        path: 'p5',
+        id: 5,
+        path: '5',
         label: 'Phòng 5',
     },
     {
-        path: 'p6',
+        id: 6,
+        path: '6',
         label: 'Phòng 6',
-    },
-    {
-        path: 'p7',
-        label: 'Phòng 7',
-    },
-    {
-        path: 'p8',
-        label: 'Phòng 8',
-    },
-    {
-        path: 'p9',
-        label: 'Phòng 9',
-    },
-    {
-        path: 'p10',
-        label: 'Phòng 10',
-    },
-    {
-        path: 'p11',
-        label: 'Phòng 11',
-    },
-    {
-        path: 'p12',
-        label: 'Phòng 12',
     },
 ];
 
 function Tabs() {
-    const [isActive, setIsActive] = useState(false);
+    const location = useLocation();
+    const [activeTab, setActiveTab] = useState(location.pathname);
+
+    const handleTabClick = (path) => {
+        setActiveTab(path);
+    };
 
     return (
-        <div className="w-10/12 m-auto text-sm font-medium text-center flex text-gray-500 border-b border-gray-200 dark:text-gray-400 justify-between">
+        <div className="w-10/12 m-auto text-sm font-medium text-center flexF text-gray-500 border-b border-gray-200 dark:text-gray-400 justify-between">
             <ul className="flex flex-wrap -mb-px">
-                {listLink.map((item, index) => (
-                    <li key={index} className="mr-2" onClick={() => setIsActive(!isActive)}>
-                        <a href={item.path} className={(isActive || item.isActive) ? "inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active" : "inline-block p-4 rounded-t-lg"}>{item.label}</a>
+                {listLink.map((tab, index) => (
+                    <li key={index}>
+                        <Link
+                            href={tab.path}
+                            className={
+                                activeTab === tab.path
+                                    ? 'inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active'
+                                    : 'inline-block p-4 rounded-t-lg'
+                            }
+                            onClick={() => handleTabClick(tab.path)}
+                        >
+                            {tab.label}
+                        </Link>
                     </li>
                 ))}
             </ul>
-
         </div>
     );
 }

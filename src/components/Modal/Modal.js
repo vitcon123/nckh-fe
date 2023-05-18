@@ -64,16 +64,19 @@ const data = [
     },
 ];
 
-export default function Modal({day}) {
+export default function Modal(props) {
     const [showModal, setShowModal] = React.useState(false);
 
     return (
         <div className="wrapper">
-            <button className="absolute chose-modal" type="button" 
-            onClick={() => {
-                setShowModal(true);
-                console.log(day);
-            }}>
+            <button
+                className="absolute chose-modal"
+                type="button"
+                onClick={() => {
+                    props.onClick();
+                    setShowModal(true);
+                }}
+            >
                 Chọn
             </button>
             {showModal ? (

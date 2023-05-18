@@ -1,10 +1,11 @@
 const routes = {
     root: '/',
-    p1: '/p1',
-    p2: '/p2',
-    p3: '/p3',
-    p4: '/p4',
-    p5: '/p5',
+    p1: 'lab/1',
+    p2: 'lab/2',
+    p3: 'lab/3',
+    p4: 'lab/4',
+    p5: 'lab/5',
+    login: '/login'
 };
 
 export default routes;

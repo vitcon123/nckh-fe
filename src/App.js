@@ -1,36 +1,55 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DefaultLayout from './layouts/DefaultLayout';
 
 import { publicRoutes } from './routes';
+import { clientLeaveLab, clientSendLab, disconnectSocket, initiateSocketConnection } from './socket.service';
+import { getLabIdFromPath } from './constants/handler';
 
 function App() {
-  return (
-    <Router>
-      <div className="App">
-        <Routes>
-          {publicRoutes.map((route, index) => {
-            let Layout = DefaultLayout;
+    const token = localStorage.getItem('token');
+    useEffect(() => {
+        if (token) {
+            initiateSocketConnection();
+        }
+        return () => {
+            disconnectSocket();
+        };
+    }, [token]);
 
-            if (route.layout) Layout = route.layout;
-            else if (route.layout === null) Layout = Fragment;
+    const previosLabId = localStorage.getItem('currentLabId');
+    const currentLabId = getLabIdFromPath(window.location.href);
+    useEffect(() => {
+        console.log('previosLabId: ' + previosLabId);
+        console.log('currentLabId: ' + currentLabId);
+        localStorage.setItem('currentLabId', currentLabId);
+        if (previosLabId && currentLabId) {
+            clientLeaveLab(previosLabId);
+            clientSendLab(currentLabId);
+        }
+        return () => {
+            disconnectSocket();
+        };
+    }, [previosLabId, currentLabId]);
 
-            // const Page = route.component;
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={
-                  <Layout/>
-                }
-              />
-            );
-          })}
-        </Routes>
-      </div>
-    </Router>
-  );
+    return (
+        <div>
+            <Router>
+                <div className="App">
+                    <Routes>
+                        {publicRoutes.map((route, index) => {
+                            let Layout = DefaultLayout;
 
+                            if (route.component) Layout = route.component;
+                            else if (route.component === null) Layout = Fragment;
+
+                            return <Route key={index} path={route.path} element={<Layout />} />;
+                        })}
+                    </Routes>
+                </div>
+            </Router>
+        </div>
+    );
 }
 
 export default App;
