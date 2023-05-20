@@ -3,11 +3,13 @@ import moment from 'moment';
 import Modal from '../Modal/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { convertTimeStampToLocalDate, getLabIdFromPath } from '../../constants/handler';
-import { timeBooking, onTimeBooking } from '../../socket.service';
+import { convertTimeStampToLocalDate } from '../../constants/handler';
+import { timeBooking, cancelTimeBooking, onTimeBooking, onCancelTimeBooking } from '../../socket.service';
 
 function WeekCalendar() {
     const [currentDate, setCurrentDate] = useState(moment());
+    const [lockTimeBookings, setLockTimeBookings] = useState([]);
+    const currentLabId = localStorage.getItem('currentLabId');
 
     const handleTodayClick = () => {
         setCurrentDate(moment());
@@ -21,18 +23,39 @@ function WeekCalendar() {
         setCurrentDate(currentDate.clone().add(1, 'week'));
     };
 
-    // const handleTimeBooking = (day, period) => {
-    //     const currentLabId = localStorage.getItem('currentLabId');
-    //     const time = convertTimeStampToLocalDate(day);
-    //     timeBooking({ labId: currentLabId, timeBooking: time, period: period }, (data) => {
+    const handleTimeBooking = (day, period) => {
+        const timeBookingDetail = convertTimeStampToLocalDate(day);
+        let payload = {
+            labId: currentLabId,
+            timeBooking: timeBookingDetail,
+            period: period,
+        };
+        timeBooking(payload);
+        setLockTimeBookings((prev) => [...prev, payload]);
+    };
 
-    //     });
-    // };
+    useEffect(() => {
+        onTimeBooking().then((data) => {
+            console.log('Received timeBooking: ', data);
+        });
+    }, []);
 
-    // useEffect(() => {
-    //     console.log('type: ' + typeof listTimeBooking);
-    //     console.log('listTimeBooking: ' + listTimeBooking);
-    // }, [listTimeBooking]);
+    const handleCancelTimeBooking = (day, period) => {
+        const timeBookingDetail = convertTimeStampToLocalDate(day);
+        let payload = {
+            labId: currentLabId,
+            timeBooking: timeBookingDetail,
+            period: period,
+        };
+        cancelTimeBooking(payload);
+    };
+
+    useEffect(() => {
+        console.log('onCancelTimeBooking');
+        onCancelTimeBooking().then((data) => {
+            console.log('Received cancelTimeBooking: ', data);
+        });
+    }, []);
 
     const weekDays = [];
     let startDate = currentDate.clone().startOf('week');
@@ -61,6 +84,11 @@ function WeekCalendar() {
                 </tbody>
             </table> */}
 
+            <div>
+                {lockTimeBookings.map((item, index) => (
+                    <p key={index}>item: {JSON.stringify(item)}</p>
+                ))}
+            </div>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-8">
                 <div className="w-10/12 m-auto pb-5">
                     <button
@@ -116,12 +144,12 @@ function WeekCalendar() {
                             </th>
                             {weekDays.map((day, index) => (
                                 <td
-                                    key={'S' + index}
+                                    key={'M' + index}
                                     className="p-4 border-solid box-item-timetable border-2 border-box-item"
                                 >
                                     <Modal
-                                        day={day}
-                                        period="MORNING"
+                                        handleCancelTimeBooking={() => handleCancelTimeBooking(day, 'MORNING')}
+                                        handleTimeBooking={() => handleTimeBooking(day, 'MORNING')}
                                     />
                                 </td>
                             ))}
@@ -137,12 +165,12 @@ function WeekCalendar() {
 
                             {weekDays.map((day, index) => (
                                 <td
-                                    key={'C' + index}
+                                    key={'A' + index}
                                     className="p-4 border-solid box-item-timetable border-2 border-box-item"
                                 >
                                     <Modal
-                                        day={day}
-                                        period="AFTERNOON"
+                                        handleCancelTimeBooking={() => handleCancelTimeBooking(day, 'AFTERNOON')}
+                                        handleTimeBooking={() => handleTimeBooking(day, 'AFTERNOON')}
                                     />
                                 </td>
                             ))}
@@ -158,12 +186,12 @@ function WeekCalendar() {
 
                             {weekDays.map((day, index) => (
                                 <td
-                                    key={'T' + index}
+                                    key={'E' + index}
                                     className="p-4 border-solid box-item-timetable border-2 border-box-item"
                                 >
                                     <Modal
-                                        day={day}
-                                        period="EVENING"
+                                        handleCancelTimeBooking={() => handleCancelTimeBooking(day, 'EVENING')}
+                                        handleTimeBooking={() => handleTimeBooking(day, 'EVENING')}
                                     />
                                 </td>
                             ))}
