@@ -6,63 +6,68 @@ import { cancelTimeBooking, timeBooking } from '../../socket.service';
 const data = [
     {
         id: 1,
-        name: 'Lập trình Java 1',
+        name: 'Lập trình Java',
         course_id: 2023123456,
     },
     {
         id: 2,
-        name: 'Lập trình Java 2',
-        course_id: 2023123456,
+        name: 'Lập trình Java',
+        course_id: 2023398463,
     },
     {
         id: 3,
+        name: 'Lập trình Java',
+        course_id: 2023129372,
+    },
+    {
+        id: 4,
+        name: 'Lập trình Java Web',
+        course_id: 2023937543,
+    },
+    {
+        id: 5,
+        name: 'Lập trình ASP.NET',
+        course_id: 2023603847,
+    },
+    {
+        id: 6,
+        name: 'Lập trình Web bằng PHP',
+        course_id: 2023128356,
+    },
+    {
+        id: 7,
+        name: 'Lập trình Web bằng PHP',
+        course_id: 2023876231,
+    },
+    {
+        id: 8,
         name: 'Lập trình Java 3',
-        course_id: 2023123456,
+        course_id: 2023098723,
     },
     {
-        id: 4,
+        id: 9,
         name: 'Lập trình Java Web',
-        course_id: 2023456789,
+        course_id: 2023763495,
     },
     {
-        id: 5,
+        id: 10,
         name: 'Lập trình C++',
-        course_id: 2023654321,
+        course_id: 202309238,
     },
     {
-        id: 4,
+        id: 11,
+        name: 'Lập trình Web bằng PHP',
+        course_id: 2023876231,
+    },
+    {
+        id: 12,
+        name: 'Lập trình Java 3',
+        course_id: 2023098723,
+    },
+    {
+        id: 13,
         name: 'Lập trình Java Web',
-        course_id: 2023456789,
-    },
-    {
-        id: 5,
-        name: 'Lập trình C++',
-        course_id: 2023654321,
-    },
-    {
-        id: 4,
-        name: 'Lập trình Java Web',
-        course_id: 2023456789,
-    },
-    {
-        id: 5,
-        name: 'Lập trình C++',
-        course_id: 2023654321,
-    },
-    {
-        id: 5,
-        name: 'Lập trình C++',
-        course_id: 2023654321,
-    },
-    {
-        id: 4,
-        name: 'Lập trình Java Web',
-        course_id: 2023456789,
-    },
-    {
-        id: 5,
-        name: 'Lập trình C++',
-        course_id: 2023654321,
+        course_id: 2023763495,
     },
 ];
 
@@ -78,7 +83,7 @@ export default function Modal(props) {
     //         labId: currentLabId,
     //         day: props.day.format('DD-MM-YYYY'),
     //         period: props.period,
-    //     }); 
+    //     });
     // };
 
     const handleTimeBooking = () => {
@@ -86,7 +91,7 @@ export default function Modal(props) {
             subject: '13456',
             day: props.day.format('DD-MM-YYYY'),
             period: props.period,
-        }; 
+        };
         props.onAddBooking(data);
     };
 
@@ -141,16 +146,16 @@ export default function Modal(props) {
                                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                         <tr>
                                             <th scope="col" className="px-6 py-3">
-                                                Product id
+                                                STT
                                             </th>
                                             <th scope="col" className="px-6 py-3">
-                                                Product Name
+                                                Tên học phần
                                             </th>
                                             <th scope="col" className="px-6 py-3">
-                                                Course Id
+                                                Mã lớp
                                             </th>
                                             <th scope="col" className="px-6 py-3">
-                                                Action
+                                                Hành động
                                             </th>
                                         </tr>
                                     </thead>

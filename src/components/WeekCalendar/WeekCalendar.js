@@ -7,7 +7,7 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 const listBooking = [
     {
         lapId: 1,
-        subject: '202220503116004 Đồ họa máy tính (4, 5) Khu A - Phòng lý thuyết tạm 41 (Cơ sở 1 - Khu A)',
+        subject: '202220503116004 Đồ họa máy tính (4, 5) - (Cơ sở 1 - Khu A)',
         day: '21-05-2023',
         period: 'MORNING',
         user: 1,
@@ -23,6 +23,35 @@ const listBooking = [
         id: 1,
         subject: '1321',
         booked: false,
+    },
+    {
+        lapId: 1,
+        subject: '202220503116004 Đồ họa ứng dụng (4, 5) (Cơ sở 1 - Khu A)',
+        day: '25-05-2023',
+        period: 'AFTERNOON',
+        user: 1,
+    },
+    {
+        lapId: 1,
+        subject: '1321',
+        day: '23-05-2023',
+        period: 'AFTERNOON',
+        user: 2,
+    },
+
+    {
+        lapId: 1,
+        subject: '202220503116004 Đồ họa ứng dụng (4, 5) (Cơ sở 1 - Khu A)',
+        day: '21-05-2023',
+        period: 'EVENING',
+        user: 1,
+    },
+    {
+        lapId: 1,
+        subject: '1321',
+        day: '27-05-2023',
+        period: 'EVENING',
+        user: 2,
     },
 ];
 
@@ -42,10 +71,16 @@ function WeekCalendar() {
         setCurrentDate(currentDate.clone().add(1, 'week'));
     };
 
-    const getBooking = (day) => {
-        return bookingList.find(
-            (item) => item.period === 'MORNING' && item.day === day.format('DD-MM-YYYY')
-        )
+    const getBookingMorning = (day) => {
+        return bookingList.find((item) => item.period === 'MORNING' && item.day === day.format('DD-MM-YYYY'));
+    };
+
+    const getBookingAfternoon = (day) => {
+        return bookingList.find((item) => item.period === 'AFTERNOON' && item.day === day.format('DD-MM-YYYY'));
+    };
+
+    const getBookingEvening = (day) => {
+        return bookingList.find((item) => item.period === 'EVENING' && item.day === day.format('DD-MM-YYYY'));
     };
 
     const addBookingHandle = (data) => {
@@ -157,12 +192,12 @@ function WeekCalendar() {
                                     key={'S' + index}
                                     className="p-4 border-solid box-item-timetable border-2 border-box-item"
                                 >
-                                    {getBooking(day) ? (
+                                    {getBookingMorning(day) ? (
                                         <Modal
                                             key={index}
                                             userBooked={{
-                                                user: getBooking(day).user,
-                                                subject: getBooking(day).subject,
+                                                user: getBookingMorning(day).user,
+                                                subject: getBookingMorning(day).subject,
                                             }}
                                             day={day}
                                             period="MORNING"
@@ -187,7 +222,20 @@ function WeekCalendar() {
                                     key={'C' + index}
                                     className="p-4 border-solid box-item-timetable border-2 border-box-item"
                                 >
-                                    <Modal key={index} day={day} period="AFTERNOON" />
+                                    {getBookingAfternoon(day) ? (
+                                        <Modal
+                                            key={index}
+                                            userBooked={{
+                                                user: getBookingAfternoon(day).user,
+                                                subject: getBookingAfternoon(day).subject,
+                                            }}
+                                            day={day}
+                                            period="AFTERNOON"
+                                        />
+                                    ) : (
+                                        <Modal key={index} day={day} period="AFTERNOON" onAddBooking={addBookingHandle} />
+                                    )}
+
                                 </td>
                             ))}
                         </tr>
@@ -205,7 +253,19 @@ function WeekCalendar() {
                                     key={'T' + index}
                                     className="p-4 border-solid box-item-timetable border-2 border-box-item"
                                 >
-                                    <Modal day={day} period="EVENING" />
+                                    {getBookingEvening(day) ? (
+                                        <Modal
+                                            key={index}
+                                            userBooked={{
+                                                user: getBookingEvening(day).user,
+                                                subject: getBookingEvening(day).subject,
+                                            }}
+                                            day={day}
+                                            period="AFTERNOON"
+                                        />
+                                    ) : (
+                                        <Modal key={index} day={day} period="AFTERNOON" onAddBooking={addBookingHandle} />
+                                    )}
                                 </td>
                             ))}
                         </tr>

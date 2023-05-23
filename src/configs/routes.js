@@ -5,7 +5,8 @@ const routes = {
     p3: 'lab/3',
     p4: 'lab/4',
     p5: 'lab/5',
-    login: '/login'
+    login: '/login',
+    statistical: '/statistical',
 };
 
 export default routes;
